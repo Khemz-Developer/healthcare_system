@@ -1,11 +1,18 @@
 package com.devstack.healthcare.system.api;
 
 import com.devstack.healthcare.system.dto.request.RequestDoctorDto;
+import com.devstack.healthcare.system.service.DoctorService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/doctors")
 public class DoctorController {
+
+    private final DoctorService doctorService;
+
+    public DoctorController(DoctorService doctorService) {
+        this.doctorService = doctorService;
+    }
 
     @GetMapping("/{id}")
     public String getDoctors(@PathVariable Long id) {
@@ -14,6 +21,7 @@ public class DoctorController {
 
     @PostMapping
     public String createDoctor(@RequestBody RequestDoctorDto doctorDto) {
+        doctorService.createDoctor(doctorDto);
         return doctorDto.toString();
     }
     @PutMapping(params = "id")
