@@ -21,8 +21,11 @@ public class DoctorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseDoctorDto getDoctors(@PathVariable Long id) {
-        return doctorService.getDoctor(id);
+    public ResponseEntity<StandardResponse> getDoctors(@PathVariable Long id) {
+        return new ResponseEntity<>(
+                new StandardResponse(200,"Doctor found!", doctorService.getDoctor(id)),
+                HttpStatus.OK
+        );
     }
 
     @PostMapping
@@ -34,15 +37,21 @@ public class DoctorController {
         );
     }
     @PutMapping("/{id}")
-    public String updateDoctor(@RequestBody RequestDoctorDto doctorDto, @PathVariable Long id) {
+    public ResponseEntity<StandardResponse> updateDoctor(@RequestBody RequestDoctorDto doctorDto, @PathVariable Long id) {
         doctorService.updateDoctor(doctorDto, id);
-        return doctorDto.toString();
+        return new ResponseEntity<>(
+                new StandardResponse(200, "Doctor updated!", doctorDto.getName()),
+                HttpStatus.OK
+        );
     }
     @DeleteMapping("/{id}")
-    public String deleteDoctor(@PathVariable Long id) {
+    public ResponseEntity<StandardResponse> deleteDoctor(@PathVariable Long id) {
 
         doctorService.deleteDoctor(id);
-        return "Doctor with id: " + id + " deleted";
+        return new ResponseEntity<>(
+                new StandardResponse(200, "Doctor deleted!", id),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping(path="/list", params = {"searchText", "page", "size"})
@@ -55,7 +64,11 @@ public class DoctorController {
     }
 
     @GetMapping("/findByName")
-    public List<ResponseDoctorDto> findDoctorsByNames(@RequestParam String name) {
-        return doctorService.findDoctorsByNames(name);
+    public ResponseEntity<StandardResponse> findDoctorsByNames(@RequestParam String name) {
+        List<ResponseDoctorDto> doctors = doctorService.findDoctorsByNames(name);
+        return new ResponseEntity<>(
+                new StandardResponse(200, "Doctors found!", doctors),
+                HttpStatus.OK
+        );
     }
 }
