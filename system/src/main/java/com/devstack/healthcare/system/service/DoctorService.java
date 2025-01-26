@@ -10,5 +10,7 @@ public interface DoctorService {
     public void updateDoctor(RequestDoctorDto dto, long id);
     public void deleteDoctor(long id);
     public ResponseDoctorDto getDoctor(long id);
-    public List<RequestDoctorDto> getAllDoctors(String searchText, int page, int size);
+    public List<ResponseDoctorDto> getAllDoctors(String searchText, int page, int size);
+
+    public List<ResponseDoctorDto> findDoctorsByNames(String name);
 }
