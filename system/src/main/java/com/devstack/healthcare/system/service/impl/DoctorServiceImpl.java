@@ -4,6 +4,7 @@ import com.devstack.healthcare.system.dto.request.RequestDoctorDto;
 import com.devstack.healthcare.system.dto.response.ResponseDoctorDto;
 import com.devstack.healthcare.system.dto.response.paginated.PaginatedDoctorResponseDto;
 import com.devstack.healthcare.system.entity.Doctor;
+import com.devstack.healthcare.system.exceptions.EntryNotFoundException;
 import com.devstack.healthcare.system.repo.DoctorRepo;
 import com.devstack.healthcare.system.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class DoctorServiceImpl implements DoctorService {
     public void deleteDoctor(long id) { // deleteDoctor method is used to delete the doctor
         Optional<Doctor> selectedDoctor = doctorRepo.findById(id);
         if(selectedDoctor.isEmpty()){
-            throw new RuntimeException("Doctor not found");
+            throw new EntryNotFoundException("Doctor not found");
         }
         doctorRepo.deleteById(selectedDoctor.get().getId()); // deleteById method is used to delete the entity by its id
     }
@@ -63,7 +64,7 @@ public class DoctorServiceImpl implements DoctorService {
     public ResponseDoctorDto getDoctor(long id) { // getDoctor method is used to get the doctor details
         Optional<Doctor> selectedDoctor = doctorRepo.findById(id);
         if(selectedDoctor.isEmpty()){
-            throw new RuntimeException("Doctor not found");
+            throw new EntryNotFoundException("Doctor not found");
         }
         Doctor doc = selectedDoctor.get();
         return new ResponseDoctorDto(
