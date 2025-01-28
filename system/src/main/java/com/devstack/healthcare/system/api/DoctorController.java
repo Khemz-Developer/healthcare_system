@@ -55,12 +55,15 @@ public class DoctorController {
     }
 
     @GetMapping(path="/list", params = {"searchText", "page", "size"})
-    public  String getAllDoctors(
+    public  ResponseEntity<StandardResponse> getAllDoctors(
             @RequestParam String searchText,
             @RequestParam int page,
             @RequestParam int size
     ) {
-        return "List of all doctors";
+        return new ResponseEntity<>(
+                new StandardResponse(200, "Doctors found!", doctorService.getAllDoctors(searchText, page, size)),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("/findByName")
