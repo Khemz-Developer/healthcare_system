@@ -10,6 +10,7 @@ import com.devstack.healthcare.system.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import com.devstack.healthcare.system.util.mapper.DoctorMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,12 @@ public class DoctorServiceImpl implements DoctorService {
 
     private final DoctorRepo doctorRepo;
 
+    private final DoctorMapper doctorMapper;
+
     @Autowired // Autowired annotation used for automatic dependency injection
-    public DoctorServiceImpl(DoctorRepo doctorRepo) {
+    public DoctorServiceImpl(DoctorRepo doctorRepo, DoctorMapper doctorMapper) {
         this.doctorRepo = doctorRepo;
+        this.doctorMapper = doctorMapper;
     }
 
     @Override
@@ -66,10 +70,11 @@ public class DoctorServiceImpl implements DoctorService {
         if(selectedDoctor.isEmpty()){
             throw new EntryNotFoundException("Doctor not found");
         }
-        Doctor doc = selectedDoctor.get();
-        return new ResponseDoctorDto(
-                doc.getId(), doc.getName(), doc.getAddress(), doc.getContact(), doc.getSalary()
-        );
+//        Doctor doc = selectedDoctor.get();
+//        return new ResponseDoctorDto(
+//                doc.getId(), doc.getName(), doc.getAddress(), doc.getContact(), doc.getSalary()
+//        );
+        return doctorMapper.toResponseDoctorDto(selectedDoctor.get());
     }
 
     @Override
@@ -77,15 +82,15 @@ public class DoctorServiceImpl implements DoctorService {
         searchText = "%" + searchText + "%";
         List<Doctor> doctors = doctorRepo.searchDoctors(searchText, PageRequest.of(page, size));
         long doctorCount = doctorRepo.countDoctors(searchText);
-        List<ResponseDoctorDto> dtos = new ArrayList<>();
-        doctors.forEach(
-                doctor -> {
-                    dtos.add(
-                            new ResponseDoctorDto(
-                                    doctor.getId(), doctor.getName(), doctor.getAddress(), doctor.getContact(), doctor.getSalary()
-                            )
-                    );
-                });
+        List<ResponseDoctorDto> dtos = doctorMapper.toResponseDoctorDtoList(doctors);
+//        doctors.forEach(
+//                doctor -> {
+//                    dtos.add(
+//                            new ResponseDoctorDto(
+//                                    doctor.getId(), doctor.getName(), doctor.getAddress(), doctor.getContact(), doctor.getSalary()
+//                            )
+//                    );
+//                });
 
         return new PaginatedDoctorResponseDto(
 
