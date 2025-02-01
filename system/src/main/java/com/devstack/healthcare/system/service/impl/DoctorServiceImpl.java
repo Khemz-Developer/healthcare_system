@@ -30,15 +30,24 @@ public class DoctorServiceImpl implements DoctorService {
         this.doctorMapper = doctorMapper;
     }
 
-    @Override
-    public void createDoctor(RequestDoctorDto dto) { // createDoctor method is used to create a new doctor
-        UUID uuid = UUID.randomUUID();
-        long docId = uuid.getMostSignificantBits();
-        Doctor doctor = new Doctor(
-                docId,dto.getName(),dto.getAddress(), dto.getContact(), dto.getSalary()
-        );
+//    @Override
+//    public void createDoctor(RequestDoctorDto dto) { // createDoctor method is used to create a new doctor
+//        UUID uuid = UUID.randomUUID();
+//        long docId = uuid.getMostSignificantBits();
+//        Doctor doctor = new Doctor(
+//                docId,dto.getName(),dto.getAddress(), dto.getContact(), dto.getSalary()
+//        );
+//
+//        doctorRepo.save(doctor);
+//    }
 
-        doctorRepo.save(doctor);
+    @Override
+    public  void createDoctor(RequestDoctorDto dto){ // createDoctor method is used to create a new doctor
+       UUID uuid = UUID.randomUUID();
+       long docId = uuid.getMostSignificantBits(); // Generate a random id for the doctor
+       Doctor doctor = doctorMapper.toDoctor(dto); // convert RequestDoctorDto to Doctor means from request dto to entity
+       doctor.setId(docId); // set the generated id to the doctor entity
+       doctorRepo.save(doctor); // save the doctor entity
     }
 
     @Override
