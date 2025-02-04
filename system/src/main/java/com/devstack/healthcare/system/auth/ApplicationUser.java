@@ -13,7 +13,9 @@ public class ApplicationUser implements UserDetails {
     private final String username;
     private final boolean isAccountNonExpired;
     private final boolean isAccountNonLocked;
+
     private final boolean isCredentialsNonExpired;
+
     private final boolean isEnabled;
 
     public ApplicationUser(Set<? extends GrantedAuthority> getAuthorities, String password, String username, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
@@ -53,7 +55,7 @@ public class ApplicationUser implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return isCredentialsNonExpired;
     }
 
     @Override

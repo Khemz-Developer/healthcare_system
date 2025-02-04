@@ -1,6 +1,6 @@
 package com.devstack.healthcare.system.entity;
 
-import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -34,5 +34,19 @@ public class User {
     // user can have multiple roles which stored in UserRoleHasUser
     private Set<UserRoleHasUser> userRoleHasUsers;
 
+    public boolean getIsAccountNonExpired() {
+        return isAccountNonExpired;
+    }
+    public boolean getIsCredentialsNonExpired() {
+        return isCredentialsNonExpired;
+    }
+
+    public boolean getIsAccountNonLocked() {
+        return isAccountNonLocked;
+    }
+
+    public boolean getIsEnabled() {
+        return isEnabled;
+    }
 
 }
