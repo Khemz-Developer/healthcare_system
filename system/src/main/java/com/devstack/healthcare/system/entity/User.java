@@ -16,7 +16,7 @@ public class User {
     @Id
     private long id;
 
-    private String name;
+    private String fullName;
 
     private String email;
 

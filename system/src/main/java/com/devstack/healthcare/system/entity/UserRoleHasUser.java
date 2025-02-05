@@ -1,14 +1,11 @@
 package com.devstack.healthcare.system.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Getter
 @Setter
 public class UserRoleHasUser {
@@ -26,6 +23,10 @@ public class UserRoleHasUser {
     @JoinColumn(name = "role_id", nullable = false) // role_id is a foreign key in UserRoleHasUser table
     private UserRole userRole;
 
+    public UserRoleHasUser(User user, UserRole userRole) {
+        this.user = user;
+        this.userRole = userRole;
+    }
 }
 
 //This is a bridge table that connects Users and User Roles (Many-to-Many relationship).

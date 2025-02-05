@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.devstack.healthcare.system.security.ApplicationUserRole.ADMIN;
+import static com.devstack.healthcare.system.security.ApplicationUserRole.DOCTOR;
 
 @Service
 public  class  ApplicationUserServiceImpl implements UserDetailsService {
@@ -26,29 +27,29 @@ public  class  ApplicationUserServiceImpl implements UserDetailsService {
     public ApplicationUserServiceImpl(UserRepo userRepo, UserRoleHasUserRepo userRoleHasUserRepo) {
         this.userRepo = userRepo;
         this.userRoleHasUserRepo = userRoleHasUserRepo;
-    }
+    } 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User selectedUser = userRepo.findByUsername(username);
         if (selectedUser == null) {
-            throw new UsernameNotFoundException("username not found");
+            throw new UsernameNotFoundException(String.format("username %s not found",username ));
         }
 
         List<UserRoleHasUser> userRoles = userRoleHasUserRepo.findByUserId(selectedUser.getId());
-        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
 
         for (UserRoleHasUser userRole : userRoles){
             if (userRole.getUserRole().getRoleName().equals("ADMIN")){
-                authorities.addAll(ADMIN.getGrantedAuthorities());
+                grantedAuthorities.addAll(ADMIN.getGrantedAuthorities());
             }
             if (userRole.getUserRole().getRoleName().equals("DOCTOR")){
-                authorities.addAll(ADMIN.getGrantedAuthorities());
+                grantedAuthorities.addAll(DOCTOR.getGrantedAuthorities());
             }
         }
 
         return new ApplicationUser(
-                authorities,
+                grantedAuthorities,
                 selectedUser.getPassword(),
                 selectedUser.getEmail(),
                 selectedUser.getIsAccountNonExpired(),

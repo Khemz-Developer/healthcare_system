@@ -1,18 +1,15 @@
 package com.devstack.healthcare.system.repo;
 
 import com.devstack.healthcare.system.entity.UserRole;
-import com.devstack.healthcare.system.entity.UserRoleHasUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 @EnableJpaRepositories
-public interface UserRoleHasUserRepo extends JpaRepository<UserRoleHasUser, Long> {
+public interface UserRoleRepo extends JpaRepository<UserRole, Long> {
 
-    @Query(value = "SELECT * FROM user_role_has_user WHERE user_id=?1", nativeQuery = true)
-    List<UserRoleHasUser> findByUserId(Long userId);
+    @Query(value = "SELECT * FROM user_role WHERE role_name=?1", nativeQuery = true)
+    UserRole findUserRoleByName(String admin);
 }
